@@ -23,16 +23,31 @@ function divide(a , b){
 function operate(firstNumber, operator, secondNumber) {
     switch (operator){
         case '+':
-            return add(~~firstNumber, ~~secondNumber);
+            return add(firstNumber - 0, secondNumber - 0);
         case '-':
-            return subtract(~~firstNumber, ~~secondNumber);
+            return subtract(firstNumber - 0, secondNumber - 0);
         case 'x':
-            return multiply(~~firstNumber, ~~secondNumber);
+            return multiply(firstNumber - 0, secondNumber - 0);
         case '/':
-            return divide(~~firstNumber, ~~secondNumber);
+            return divide(firstNumber - 0, secondNumber - 0);
         default:
             return undefined;
     }
+}
+
+function calculateNumber(option) {
+    if(operatorPress){
+        firstNumber = history.textContent.split(' ')[0]
+        secondNumber = result.textContent;
+        history.textContent = result.textContent === '0' ?  `${history.textContent.split(' ')[0]} ${option}`
+            : `${operate(firstNumber, operator, secondNumber)} ${option}`;
+        operator = option;
+    }else{
+        operator = option;
+        history.textContent = `${result.textContent} ${option} `;
+    }
+    result.textContent = '0';
+    operatorPress = true;
 }
 
 const result = document.querySelector('.result');
@@ -44,9 +59,8 @@ buttons.forEach((button) => {
         if(button.className === 'button operator'){
             switch(button.textContent){
             case 'Del':
-                if(operatorPress){
+                if(equalPress){
                     history.textContent = '';
-                    operatorPress = false;
                 }
                 else{
                     if(result.textContent != 0)
@@ -55,38 +69,60 @@ buttons.forEach((button) => {
                         result.textContent = 0;           
                 }
                 break;
-            case 'Clr':
+            case 'C':
                 result.textContent = 0;
                 history.textContent = '';
+                firstNumber = 0;
+                secondNumber = 0;
+                break;
+            case 'CE':
+                result.textContent = 0;
+                if(equalPress){
+                    history.textContent = '';
+                    equalPress = false;
+                }
                 break;
             case '+':
-                firstNumber = result.textContent;
-                operator = '+';
-                history.textContent = `${firstNumber} + `
-                operatorPress = true;
+                calculateNumber('+');
+                break;
+            case '-':
+                calculateNumber('-');
+                break;
+            case 'x':
+                calculateNumber('x');
+                break;
+            case '÷':
+                calculateNumber('/');
                 break;
             case '=':
+                if(result.textContent === '0'|| equalPress) break;
+                firstNumber = history.textContent.split(' ')[0]
                 secondNumber = result.textContent;
-                history.textContent = `${firstNumber} ${operator} ${secondNumber}` ;
+                history.textContent = `${firstNumber} ${operator} ${secondNumber} =`;
                 result.textContent = operate(firstNumber, operator, secondNumber);
-                // operatorPress = true;
+                operatorPress = false;
                 equalPress = true;
                 break;
             }
         }else{
-            if(result.textContent === '0' || operatorPress || equalPress){
-                result.textContent = button.textContent;
-                if(equalPress && !operatorPress){
+            if(result.textContent === '0' || equalPress){
+                if(button.textContent === '.'){
+                    result.textContent = '0.';
+                }else{
+                    result.textContent = button.textContent;
+                }
+                if(equalPress){
                     history.textContent = '';
                     equalPress = false;
                 }
-                operatorPress = false;
             }else{
-                result.textContent += button.textContent;
+                if(result.textContent[result.textContent.length - 1] !== '.' || button.textContent !== '.'){
+                    result.textContent += button.textContent;
+                }
             }
         }
         
     })
 });
 
-// make all operator work
+// + หลังจากเท่ากับแล้ว history หาย, แก้ decimal point ต่อกันได้แบบ 5.5.5.5 อาจจะหาในresultว่ามีจุดมั้ยถ้ามีก็ไม่ให้เพิ่ม 
