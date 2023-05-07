@@ -10,6 +10,21 @@ body {
     margin: 0;
 }
 
+:root {
+    --color:0, 0%; 
+    --l:90%; 
+    --operator:36, 100%;
+    --h:50%;
+
+    --color-primary: hsl(var(--color),var(--l));
+    --color-primary-darker: hsl(var(--color),calc(var(--l) - 5%));
+    --color-primary-darkest: hsl(var(--color),calc(var(--l) - 10%)); 
+
+    --color-operator: hsl(var(--operator),var(--h));
+    --color-operator-darker: hsl(var(--operator),calc(var(--h) - 5%));
+    --color-operator-darkest: hsl(var(--operator),calc(var(--h) - 10%)); 
+}
+
 .frame {
     border: thin solid black;
     border-radius: 10px;
@@ -56,4 +71,25 @@ span {
     border-radius: 10px;
     border: 0;
     font-size: 70px;
+    background-color: var(--color-primary);
+}
+
+.button:hover {
+    background-color: var(--color-primary-darker);
+}
+
+.button:active {
+    background-color: var(--color-primary-darkest);
+}
+
+.operator {
+    background-color: var(--color-operator);
+}
+
+.operator:hover {
+    background-color: var(--color-operator-darker);
+}
+
+.operator:active {
+    background-color: var(--color-operator-darkest);
 }

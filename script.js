@@ -82,6 +82,9 @@ buttons.forEach((button) => {
                     equalPress = false;
                 }
                 break;
+            case '+/-':
+                result.textContent = `${-result.textContent}`;
+                break;
             case '+':
                 calculateNumber('+');
                 break;
