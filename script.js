@@ -1,7 +1,6 @@
 let firstNumber;
 let secondNumber;
 let operator;
-let historyDis;
 let operatorPress = false;
 let equalPress = false;
 function add(a, b){
@@ -23,13 +22,13 @@ function divide(a , b){
 function operate(firstNumber, operator, secondNumber) {
     switch (operator){
         case '+':
-            return add(firstNumber - 0, secondNumber - 0);
+            return Math.round(add(firstNumber - 0, secondNumber - 0) * 1000) / 1000;
         case '-':
-            return subtract(firstNumber - 0, secondNumber - 0);
+            return Math.round(subtract(firstNumber - 0, secondNumber - 0) * 1000) / 1000;
         case 'x':
-            return multiply(firstNumber - 0, secondNumber - 0);
+            return Math.round(multiply(firstNumber - 0, secondNumber - 0) * 1000) / 1000;
         case '/':
-            return divide(firstNumber - 0, secondNumber - 0);
+            return Math.round(divide(firstNumber - 0, secondNumber - 0) * 1000) / 1000;
         default:
             return undefined;
     }
@@ -48,6 +47,7 @@ function calculateNumber(option) {
     }
     result.textContent = '0';
     operatorPress = true;
+    equalPress = false;
 }
 
 const result = document.querySelector('.result');
@@ -116,7 +116,7 @@ buttons.forEach((button) => {
                     equalPress = false;
                 }
             }else{
-                if(result.textContent[result.textContent.length - 1] !== '.' || button.textContent !== '.'){
+                if(!result.textContent.includes('.') || button.textContent !== '.'){
                     result.textContent += button.textContent;
                 }
             }
@@ -125,4 +125,4 @@ buttons.forEach((button) => {
     })
 });
 
-// + หลังจากเท่ากับแล้ว history หาย, แก้ decimal point ต่อกันได้แบบ 5.5.5.5 อาจจะหาในresultว่ามีจุดมั้ยถ้ามีก็ไม่ให้เพิ่ม 
+// + หลังจากเท่ากับแล้ว history หาย
